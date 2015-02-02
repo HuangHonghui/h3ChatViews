@@ -1,0 +1,150 @@
+@import "mdicons";
+@import "var";
+@import "mixin";
+@import "normalize";
+@import "css3";
+
+*,*:before,*:after{
+  box-sizing: border-box;
+}
+
+html{
+  height: 100%;
+}
+
+body{
+  font: 16px/1.5 "Noto Sans S Chinese",Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
+  min-height: 100%;
+  color: $base-color;
+  height: 100%;
+}
+
+input[type=text],textarea{
+  font-size: 14px;
+  height: 34px;
+  line-height: 20px;
+  outline: 0;
+  width: 100%;
+  padding: 6px 12px;
+  vertical-align: top;
+  border: $input-border;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: rgba(255,255,255,0);
+  border-radius: .2857rem;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+  &:focus{
+    border: $input-focus-border;
+  }
+}
+
+.zui.field{
+  width: 200px;
+  margin-bottom: 24px;
+}
+
+
+.chatIcons{
+  width: 40px;
+  height: 40px;
+  font-size: 1.5em;
+  line-height: 40px;
+  text-align: center;
+  border-radius: 50%;
+  color: #ffffff;
+  box-shadow: 0 0 0 8px #afdcf8;
+  position: absolute;
+  left: 17%;
+  background: #46a4da;
+}
+
+.page-wrap{
+  height: 100%;
+  position: relative;
+}
+.msgList{
+  padding: 0;
+  position: relative;
+  &:before{
+    content: " ";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background: #afdcf8;
+    left: 19%;
+    width: 10px;
+    margin-left: -4px;
+  }
+}
+.listItem{
+  animation: bgTrans;
+  animation-duration: 1s;
+  animation-timing-function:ease;
+  list-style: none;
+  margin-bottom: 24px;
+}
+.msgTime{
+  @include float(left);
+  text-align: right;
+  width: $msgTimeWidth;
+  padding-right: 100px;
+  .date{
+    font-size: 12px;
+    color: #aaaaaa;
+    display: block;
+    font-weight: 300;
+  }
+  .time{
+    font-size: 38px;
+    line-height: 38px;
+    font-weight: 300;
+    &:hover{
+      animation: scaleUp 0.5s;
+    }
+  }
+}
+.msgBody{
+  margin-left: $msgTimeWidth;
+  width:(100%-$msgTimeWidth);
+  color: #ffffff;
+  background: $time-line-bgColor;
+  padding: 1.5em;
+  @include border-radius(4px,4px,4px,4px);
+  position: relative;
+
+  &:after{
+    right: 100%;
+    position: absolute;
+    content: " ";
+    height: 0;
+    width: 0;
+    pointer-events: none;
+    border: 10px solid transparent;
+    border-right-color: $time-line-bgColor;
+    top: 10px;
+  }
+}
+.msgUser{
+  padding: 0 0 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.4);
+  margin-bottom: 24px;
+}
+
+#chatBox{
+  width: 1000px;
+  margin: 0 auto;
+  height: 100%;
+  padding: 10px 30px;
+  box-shadow: 0px -30px 30px rgba(78, 78, 78, 0.5);
+}
+
+.msgFormBox{
+  padding: 0 30px;
+  margin-bottom: 24px;
+}
+#msgToSend{
+  height: 80px;
+  width: 100%;
+}
+#formActions{
+  text-align: right;
+}

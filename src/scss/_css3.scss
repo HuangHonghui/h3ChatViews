@@ -1,0 +1,22 @@
+@mixin border-radius($leftTop:0,$rightTop:0,$rightBottom:0,$leftBottom:0){
+  border-radius: $leftTop $rightTop $rightBottom $leftBottom;
+}
+@keyframes bgTrans {
+  from{
+    background: #ffff00;
+  }
+  to{
+    background: #ffffff;
+  }
+}
+
+@keyframes scaleUp {
+  80% {
+    opacity: 0;
+    transform: scale(2);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2);
+  }
+}

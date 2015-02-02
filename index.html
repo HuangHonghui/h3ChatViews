@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>jquery plugins</title>
+    <link rel="stylesheet" href="dist/css/common.css"/>
+</head>
+<body>
+
+<div class="page-wrap">
+    <div id="chatBox">
+        <h2>Chat Room</h2>
+        <div class="msgFormBox" >
+            <form action="/" v-on="submit: submitMsg">
+                <div class="zui field">
+                    <input type="text" id="userName" name="userName" v-model="userName" class=""
+                           placeholder="UserName" required=""/>
+                </div>
+                <textarea name="msgToSend" id="msgToSend" cols="30" v-model="msgToSend" required></textarea>
+                <div id="formActions">
+                    <button id="sendMsgBtn">Send</button>
+                </div>
+            </form>
+        </div>
+        <ul class="msgList">
+            <li v-repeat="messages | orderBy sendTime reverse" class="listItem">
+                <div class="msgTime">
+                    <span class="date">{{sendTime | date MM/dd/yyyy}}</span>
+                    <span class="time">{{sendTime | date HH:mm}}</span>
+                </div>
+                <div class="chatIcons mdicon-sms"></div>
+                <div class="msgBody">
+                    <div class="msgUser">{{userName}}</div>
+                    <div class="msgContent">{{messageContent}}</div>
+                </div>
+            </li>
+        </ul>
+
+    </div>
+</div>
+
+<!--<script src="//code.jquery.com/jquery-2.1.3.min.js"></script>-->
+<script src="bower_components/vue/dist/vue.js"></script>
+<script>
+    Vue.filter('date',function(value,key){
+        var format = key || 'MM/dd/yyyy HH:mm';
+        var date = new Date(value);
+        var Week = ['日', '一', '二', '三', '四', '五', '六'];
+
+        format = format.replace(/yyyy|YYYY/, date.getFullYear());
+        format = format.replace(/yy|YY/, (date.getYear() % 100) > 9 ? (date.getYear() % 100).toString() : '0' + (date.getYear() % 100));
+
+        format = format.replace(/MM/, date.getMonth() + 1 > 9 ? (date.getMonth() + 1).toString() : '0' + (date.getMonth() + 1));
+        format = format.replace(/M/g, (date.getMonth() + 1));
+
+        format = format.replace(/w|W/g, Week[date.getDay()]);
+
+        format = format.replace(/dd|DD/, date.getDate() > 9 ? date.getDate().toString() : '0' + date.getDate());
+        format = format.replace(/d|D/g, date.getDate());
+
+        format = format.replace(/hh|HH/, date.getHours() > 9 ? date.getHours().toString() : '0' + date.getHours());
+        format = format.replace(/h|H/g, date.getHours());
+        format = format.replace(/mm/, date.getMinutes() > 9 ? date.getMinutes().toString() : '0' + date.getMinutes());
+        format = format.replace(/m/g, date.getMinutes());
+
+        format = format.replace(/ss|SS/, date.getSeconds() > 9 ? date.getSeconds().toString() : '0' + date.getSeconds());
+        format = format.replace(/s|S/g, date.getSeconds());
+
+        return format;
+    });
+var chatBox = new Vue({
+    el:'#chatBox',
+    data:{
+        messages:[{
+            userName:'admin',
+            messageContent:'welcome',
+            sendTime:new Date()
+        },{
+            userName:'admin',
+            messageContent:'welcome2',
+            sendTime:new Date()
+        }],
+        userName:"",
+        msgToSend:""
+    },
+    computed:{
+    },
+    methods:{
+        submitMsg:function(e){
+            e.preventDefault();
+            var msgObj = {
+                userName:this.userName,
+                messageContent:this.msgToSend,
+                sendTime:new Date().getTime()
+            };
+            this.$data.messages.unshift(msgObj);
+            console.log(this.$data.messages);
+            this.userName="";
+            this.msgToSend="";
+            return false;
+        }
+    }
+});
+</script>
+</body>
+</html>
