@@ -1,13 +1,35 @@
+// 清理浮动
 @mixin clearfix{
   *zoom:1;
   &:before,&:after{
     display: table;
-    content: " ";
+    content: "";
   }
   &:after{
     clear: both;
   }
 }
+// display:inline-block
+@mixin inline-block{
+  display: inline-block;
+}
+%inline-block{
+  display: inline-block;
+}
+// 浮动
 @mixin float($value:left){
   float: $value;
+}
+
+//块居中，需要设置宽度
+@mixin center-block{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+@mixin x-border-radius ($values) {
+  -webkit-border-radius: $values; // iOS Safari 3.2, Android 2.1
+  -moz-border-radius: $values; // iOS Safari 3.2, Android 2.1
+  border-radius: $values;
 }
