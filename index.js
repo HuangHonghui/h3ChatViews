@@ -9,14 +9,17 @@ var bodyParser = require('body-parser');
 var mongoose = require("mongoose");
 var io = require('socket.io')(http);
 
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
+
 //  连接数据库
 mongoose.connect('mongodb://localhost/h3');
 var Messages = require("./models/messages.js");
-console.log(Messages);
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+
 // 设置静态文件路径
 app.use(express.static(__dirname,'/dist'));
+
+app.use(bodyParser());
 
 app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
@@ -24,23 +27,23 @@ app.get('/', function(req, res){
 
 io.on('connection', function(socket){
     console.log('a user connected');
-    Messages.find({}).exec(function(err,messages){
+    Messages.find().exec(function(err,messages){
         if(err) console.error(err);
-
+//console.log(messages);
         socket.emit("msg:init",messages);
     });
     socket.on('disconnect', function(){
         console.log('user disconnected');
     });
     socket.on('msg:send',function(msg){
-        if(msg){
-            //var newMsg = new Messages(msg);
-            console.log('message: ' + msg);
+        if(msg&&typeof msg=='object'){
 
-            //newMsg.save(function(err,msgHadSaved){
-            //    if(err) console.error(err);
-            //    socket.broadcast.emit("msg:new", msgHadSaved);
-            //});
+            var newMsg = new Messages(msg);
+
+            newMsg.save(function(err,msgHadSaved){
+                if(err) console.error(err);
+                socket.broadcast.emit("msg:new", msgHadSaved);
+            });
         }
 
     });

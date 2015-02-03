@@ -23,7 +23,7 @@
             </form>
         </div>
         <ul class="msgList">
-            <li v-repeat="messages | orderBy sendTime reverse" class="listItem">
+            <li v-repeat="messages | orderBy created reverse" track-by="_id" class="listItem">
                 <div class="msgTime">
                     <span class="date">{{created | date MM/dd/yyyy}}</span>
                     <span class="time">{{created | date HH:mm}}</span>
@@ -103,7 +103,8 @@ var chatBox = new Vue({
                 body:this.msgToSend
             };
 
-            sendMsg(socket, JSON.stringify(msgObj));
+//            sendMsg(socket, JSON.stringify(msgObj));
+            sendMsg(socket, msgObj);
             msgObj.created = new Date();
             this.$data.messages.unshift(msgObj);
             console.log(this.$data.messages);
@@ -112,7 +113,13 @@ var chatBox = new Vue({
             return false;
         },
         receive:function(msg){
-            this.$data.messages.unshift(JSON.parse(msg));
+            console.log('receive');
+            this.$data.messages.unshift(msg);
+        },
+        initList:function(allMsgs){
+            console.log(typeof allMsgs);
+            console.log(this.$data.messages);
+//            this.$data.messages = allMsgs.unshift(this.$data.messages[0]);
         }
     }
 });
@@ -122,9 +129,11 @@ var chatBox = new Vue({
             chatBox.receive(msg);
         }
     });
-    socket.on('msg:new',function(msg){
+    socket.on('msg:init',function(messages){
         if(chatBox){
-            chatBox.receive(msg);
+            chatBox.messages = messages.reverse();
+            console.log();
+            chatBox.initList(messages);
         }
     });
 
