@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import "mdicons";
 @import "var";
 @import "mixin";
@@ -97,9 +98,6 @@ input[type=text],textarea{
     font-size: 38px;
     line-height: 38px;
     font-weight: 300;
-    &:hover{
-      animation: scaleUp 0.5s;
-    }
   }
 }
 .msgBody{
@@ -131,6 +129,7 @@ input[type=text],textarea{
 
 #chatBox{
   width: 1000px;
+  min-height: 600px;
   margin: 0 auto;
   height: 100%;
   padding: 10px 30px;
@@ -138,8 +137,7 @@ input[type=text],textarea{
 }
 
 .msgFormBox{
-  padding: 0 30px;
-  margin-bottom: 24px;
+  margin-bottom: 36px;
 }
 #msgToSend{
   height: 80px;
@@ -147,4 +145,5 @@ input[type=text],textarea{
 }
 #formActions{
   text-align: right;
+  margin-top: 24px;
 }

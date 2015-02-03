@@ -2740,8 +2740,6 @@ input[type=text], textarea {
     font-size: 38px;
     line-height: 38px;
     font-weight: 300; }
-    .msgTime .time:hover {
-      animation: scaleUp 0.5s; }
 
 .msgBody {
   margin-left: 25%;
@@ -2769,20 +2767,21 @@ input[type=text], textarea {
 
 #chatBox {
   width: 1000px;
+  min-height: 600px;
   margin: 0 auto;
   height: 100%;
   padding: 10px 30px;
   box-shadow: 0px -30px 30px rgba(78, 78, 78, 0.5); }
 
 .msgFormBox {
-  padding: 0 30px;
-  margin-bottom: 24px; }
+  margin-bottom: 36px; }
 
 #msgToSend {
   height: 80px;
   width: 100%; }
 
 #formActions {
-  text-align: right; }
+  text-align: right;
+  margin-top: 24px; }
 
 /*# sourceMappingURL=common.css.map */
