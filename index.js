@@ -19,7 +19,8 @@ db.on('error', console.error.bind(console, 'connection error:'));
 // 设置静态文件路径
 app.use(express.static(__dirname,'/dist'));
 
-app.use(bodyParser());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');

@@ -18,7 +18,7 @@
                 </div>
                 <textarea name="msgToSend" id="msgToSend" cols="30" v-model="msgToSend" required></textarea>
                 <div id="formActions">
-                    <button id="sendMsgBtn">Send</button>
+                    <button id="sendMsgBtn" class="button blue">Send</button>
                 </div>
             </form>
         </div>
@@ -85,11 +85,7 @@ function sendMsg(socket,msgObj){
 var chatBox = new Vue({
     el:'#chatBox',
     data:{
-        messages:[{
-            userName:'admin',
-            body:'welcome',
-            created:new Date()
-        }],
+        messages:[],
         userName:"",
         msgToSend:""
     },
@@ -121,6 +117,13 @@ var chatBox = new Vue({
             console.log(this.$data.messages);
 //            this.$data.messages = allMsgs.unshift(this.$data.messages[0]);
         }
+    },
+    init:function(){
+        this.$data.messages.unshift({
+            userName:'admin',
+            body:'welcome',
+            created:new Date()
+        });
     }
 });
 

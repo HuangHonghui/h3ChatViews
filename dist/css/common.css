@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @font-face {
   font-family: 'mdicons';
   src: url("fonts/mdicons.eot?efss2d");
@@ -2657,6 +2658,70 @@ th {
   100% {
     opacity: 0;
     transform: scale(2); } }
+/* 按钮
+ ===================================== */
+/* button
+ ==================== */
+.button {
+  display: inline-block;
+  min-height: 1em;
+  outline: none;
+  border: none;
+  vertical-align: baseline;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0 0.25em 0 0;
+  padding: 0.78571em 1.5em 0.78571em;
+  text-transform: none;
+  text-shadow: none;
+  font-weight: bold;
+  line-height: 1;
+  font-style: normal;
+  text-align: center;
+  text-decoration: none;
+  background: #e0e0e0 none;
+  border-radius: 0.2857rem;
+  box-shadow: 0 0 0 1px transparent inset, 0 0 0 0 rgba(39, 41, 43, 0.15) inset;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-transition: opacity 0.1s ease, background-color 0.1s ease, color 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+  -moz-transition: opacity 0.1s ease, background-color 0.1s ease, color 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+  -o-transition: opacity 0.1s ease, background-color 0.1s ease, color 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+  transition: opacity 0.1s ease, background-color 0.1s ease, color 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+  will-change: '';
+  -webkit-tap-highlight-color: transparent;
+ /* button :hover
+==================== */
+  /* button :focus
+==================== */
+  /* button :active
+  ==================== */ }
+  .button:hover {
+    background: #e8e8e8 none;
+    box-shadow: none;
+    color: rgba(0, 0, 0, 0.8); }
+  .button:focus {
+    background-color: '';
+    background-image: '';
+    box-shadow: 0px 0px 0px 1px transparent inset, 0px 0px 1px rgba(81, 167, 232, 0.8) inset, 0px 0px 3px 2px rgba(81, 167, 232, 0.8);
+    color: rgba(0, 0, 0, 0.8); }
+  .button:active {
+    background-color: #cccccc;
+    background-image: '';
+    color: rgba(0, 0, 0, 0.8);
+    box-shadow: 0px 0px 0px 1px transparent inset, 0px 1px 4px 0px rgba(39, 41, 43, 0.15) inset; }
+  .button.blue {
+    background: #6cbfee none;
+    color: #ffffff; }
+    .button.blue:hover {
+      background: #83c9f1 none;
+      box-shadow: '';
+      color: #ffffff; }
+    .button.blue:active {
+      background-color: #3eabe9;
+      background-image: ''; }
+
 *, *:before, *:after {
   box-sizing: border-box; }
 

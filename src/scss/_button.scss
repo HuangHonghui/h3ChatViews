@@ -1,4 +1,73 @@
+@import "var";
+/* button
+ ==================== */
 .button{
-  color: #ffffff;
+  display: inline-block;
+  min-height: 1em;
+  outline:none;
+  border: none;
+  vertical-align: baseline;
+  color: $button-color;
+  margin: 0 0.25em 0 0;
+  padding: 0.78571em 1.5em 0.78571em;
+  text-transform: none;
+  text-shadow: none;
+  font-weight: bold;
+  line-height: 1;
+  font-style: normal;
+  text-align: center;
+  text-decoration: none;
+  background: $button-bgColor none;
+  border-radius: 0.2857rem;
+  box-shadow: 0 0 0 1px transparent inset, 0 0 0 0 rgba(39,41,43,0.15) inset;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-transition: opacity 0.1s ease, background-color 0.1s ease, color 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+  -moz-transition: opacity 0.1s ease, background-color 0.1s ease, color 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+  -o-transition: opacity 0.1s ease, background-color 0.1s ease, color 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+  transition: opacity 0.1s ease, background-color 0.1s ease, color 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+  will-change:'';
+  -webkit-tap-highlight-color: transparent;
 
+  /* button :hover
+ ==================== */
+  &:hover{
+    background: $button-hover-bgColor none;
+    box-shadow: none;
+    color: $button-hover-color;
+  }
+  /* button :focus
+==================== */
+  &:focus{
+    background-color: '';
+    background-image: '';
+    box-shadow: 0px 0px 0px 1px transparent inset, 0px 0px 1px rgba(81, 167, 232, 0.8) inset, 0px 0px 3px 2px rgba(81, 167, 232, 0.8);
+    color: rgba(0, 0, 0, 0.8);
+  }
+  /* button :active
+  ==================== */
+  &:active{
+    background-color: #cccccc;
+    background-image: '';
+    color: rgba(0, 0, 0, 0.8);
+    box-shadow: 0px 0px 0px 1px transparent inset, 0px 1px 4px 0px rgba(39, 41, 43, 0.15) inset;
+  }
+
+  &.blue{
+    background: #6cbfee none;
+    color: #ffffff;
+    &:hover{
+      background: lighten(#6cbfee,5%) none;
+      box-shadow: '';
+      color: #ffffff;
+    }
+    &:active{
+      background-color: darken(#6cbfee,10%);
+      background-image: '';
+    }
+  }
 }
+
+
