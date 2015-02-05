@@ -1,0 +1,7 @@
+{
+  "verbose": true,
+  "ignore": ["src/*","bower_components/*","models/*"],
+  "execMap": {
+
+  }
+}

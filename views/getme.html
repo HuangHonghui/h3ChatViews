@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div id="me"></div>
+<div id="errorMsg"></div>
+
+<script src="../bower_components/jquery/dist/jquery.js"></script>
+<script src="../bower_components/store-js/store.js"></script>
+<script>
+    $(function(){
+        console.log(store.get('token'));
+        var authToken = store.get('token');
+        var authHeaders;
+        if(authToken){
+            authHeaders = {authorization: "Fun "+authToken};
+            $.ajax({
+                headers:authHeaders,
+                type:"get",
+                url:"/api/me"
+            }).done(function(data){
+                console.log(data);
+                if(data.type){
+                    $("#me").html(data.type);
+                }else{
+                }
+            }).fail(function(xhr){
+                $("#errorMsg").html(xhr.responseText);
+            });
+        }else{
+console.log("go to login")
+        }
+
+
+    });
+</script>
+</body>
+</html>

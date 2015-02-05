@@ -2734,7 +2734,7 @@ body {
   color: #47a3da;
   height: 100%; }
 
-input[type=text], textarea {
+input[type=text], input[type=password], textarea {
   font-size: 14px;
   height: 34px;
   line-height: 20px;
@@ -2747,7 +2747,7 @@ input[type=text], textarea {
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   border-radius: .2857rem;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset; }
-  input[type=text]:focus, textarea:focus {
+  input[type=text]:focus, input[type=password]:focus, textarea:focus {
     border: 1px solid rgba(39, 41, 43, 0.3); }
 
 .zui.field {

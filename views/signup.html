@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../dist/css/common.css"/>
+</head>
+<body>
+<h1>Sign Up</h1>
+<div id="error"></div>
+<form action="/signin" method="post" id="signInForm">
+    <fieldset>
+        <legend>Sign Up</legend>
+        <label for="email">用户名：</label>
+        <input type="text" id="email" name="email" required=""/>
+
+        <label for="password">密码：</label>
+        <input type="password" id="password" name="password" required=""/>
+
+        <input type="submit" value="Sign Up" class="button"/>
+        </fieldset>
+    </form>
+
+
+<script src="../bower_components/jquery/dist/jquery.js"></script>
+<script src="../bower_components/store-js/store.js"></script>
+<script>
+    $(function(){
+        console.log(store.get('token'));
+        $("#signInForm").submit(function(e){
+            e.preventDefault();
+            $.ajax({
+                type:"post",
+                url:"/signin",
+                data:{email:email.value,password:password.value}
+            }).done(function(data){
+                console.log(data);
+                if(data.type){
+                    store.set('token',data.token);
+                    location.href = '/'
+                }else{
+                    $("#error").html(data.data+", 请<a href='/logoin'>登录</a>。");
+                }
+            });
+            return false;
+        });
+
+    });
+</script>
+</body>
+</html>
