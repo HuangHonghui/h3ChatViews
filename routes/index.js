@@ -7,7 +7,7 @@ var jwt = require('jsonwebtoken');
 var User = require("../models/Users");
 var auth = require("../helpers/auth");
 
-router.get('/',function(req,res){
+router.get('/',auth.ensureAuthorized,function(req,res){
     res.render('index');
 });
 

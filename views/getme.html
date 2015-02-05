@@ -26,12 +26,14 @@
                 if(data.type){
                     $("#me").html(data.type);
                 }else{
+                    location.href = "/login";
                 }
             }).fail(function(xhr){
                 $("#errorMsg").html(xhr.responseText);
             });
         }else{
-console.log("go to login")
+            location.href = "/login";
+            console.log("go to login");
         }
 
 

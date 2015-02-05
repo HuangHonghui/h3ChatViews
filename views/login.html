@@ -7,7 +7,7 @@
 </head>
 <body>
 <h1>登录</h1>
-<form action="/authenticate" method="post">
+<form action="/authenticate" method="post" id="loginForm">
     <fieldset>
         <legend>登录</legend>
         <label for="email">用户名：</label>
@@ -19,6 +19,30 @@
         <input type="submit" value="Login"/>
     </fieldset>
 </form>
+<script src="../bower_components/jquery/dist/jquery.js"></script>
+<script src="../bower_components/store-js/store.js"></script>
+<script>
+    $(function(){
+        console.log(store.get('token'));
+        $("#loginForm").submit(function(e){
+            e.preventDefault();
+            $.ajax({
+                type:"post",
+                url:"/authenticate",
+                data:{email:$("#email").val(),password:$("#password").val()}
+            }).done(function(data){
+                console.log(data);
+                if(data.type){
+                    store.set('token',data.token);
+                    location.href = '/'
+                }else{
+                    $("#error").html(data.data);
+                }
+            });
+            return false;
+        });
 
+    });
+</script>
 </body>
 </html>
