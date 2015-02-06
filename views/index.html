@@ -106,6 +106,14 @@ var chatBox = new Vue({
         receive:function(msg){
             console.log('receive');
             this.$data.messages.unshift(msg);
+<<<<<<< Updated upstream:views/index.html
+=======
+        },
+        created:function(allMsgs){
+            console.log(typeof allMsgs);
+            console.log(this.$data.messages);
+//            this.$data.messages = allMsgs.unshift(this.$data.messages[0]);
+>>>>>>> Stashed changes:index.html
         }
     }
 });
