@@ -2768,7 +2768,7 @@ input[type=text], input[type=password], textarea {
   background: #46a4da; }
 
 .page-wrap {
-  height: 100%;
+  min-height: 100%;
   position: relative; }
 
 .msgList {

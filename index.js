@@ -7,8 +7,10 @@ var path = require('path');
 var http = require('http').Server(app);
 var bodyParser = require('body-parser');
 var mongoose = require("mongoose");
+var socketioJwt = require('socketio-jwt');
 var io = require('socket.io')(http);
 
+var jwtSecret = "love 1617";
 
 var routes = require('./routes/index');
 
@@ -44,7 +46,13 @@ app.use("/",routes);
 //    res.sendFile(__dirname + '/index.html');
 //});
 
+io.set('authorization',socketioJwt.authorize({
+    secret: jwtSecret,
+    handshake: true
+}));
+console.log(io);
 io.on('connection', function(socket){
+    //console.log(socket.handshake.decoded_token.email, 'connected');
     console.log('a user connected');
     Messages.find().exec(function(err,messages){
         if(err) console.error(err);

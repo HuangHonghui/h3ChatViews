@@ -6,8 +6,9 @@ var router = express.Router();
 var jwt = require('jsonwebtoken');
 var User = require("../models/Users");
 var auth = require("../helpers/auth");
+var jwtSecret = "love 1617";
 
-router.get('/',auth.ensureAuthorized,function(req,res){
+router.get('/', function(req,res){
     res.render('index');
 });
 
@@ -61,7 +62,7 @@ router.post('/signin',function(req,res){
                 userModel.email = req.body.email;
                 userModel.password = req.body.password;
                 userModel.save(function(err,user){
-                    user.token = jwt.sign(user,"1617");
+                    user.token = jwt.sign(user,jwtSecret);
                     user.save(function(err,userSaved){
                         res.json({
                             type:true,

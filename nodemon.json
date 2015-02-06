@@ -1,6 +1,6 @@
 {
   "verbose": true,
-  "ignore": ["src/*","bower_components/*","models/*"],
+  "ignore": ["src/*","bower_components/*","models/*",".idea/*"],
   "execMap": {
 
   }

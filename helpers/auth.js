@@ -1,6 +1,7 @@
 /**
  * Created by Administrator on 2015/2/5.
  */
+var User = require('../models/Users');
 function ensureAuthorized(req, res, next) {
 
     var bearerToken;
@@ -19,7 +20,7 @@ function ensureAuthorized(req, res, next) {
                 if(user){
                     next();
                 }else{
-                    res.redirect("/");
+                    res.redirect("/login");
                 }
             }
         });
@@ -30,7 +31,7 @@ function ensureAuthorized(req, res, next) {
         //    status:403,
         //    message:"Forbidden！"
         //})
-        res.send(403,"Forbidden！");
+        res.status(403).send("Forbidden！");
     }
 }
 module.exports.ensureAuthorized = ensureAuthorized;
