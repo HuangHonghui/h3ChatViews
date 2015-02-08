@@ -17,7 +17,7 @@
                            placeholder="UserName" required=""/>
                 </div>
                 <textarea name="msgToSend" id="msgToSend" cols="30" v-model="msgToSend" required></textarea>
-                <div id="formActions">
+                <div id="formActions" class="formActions">
                     <button id="sendMsgBtn" class="button blue">Send</button>
                 </div>
             </form>
@@ -47,6 +47,13 @@
     Vue.config.debug = true
     var socket = io.connect(store.get('token')?('?token='+store.get('token')):'',{
         'forceNew':true
+    });
+    socket.on("error", function(error) {
+        if (error.type == "UnauthorizedError" || error.code == "invalid_token") {
+            // redirect user to login page perhaps?
+            console.log("User's token has expired");
+            location.href="/login";
+        }
     });
 //$(function(){
 //    $('form').submit(function(){

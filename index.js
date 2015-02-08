@@ -67,7 +67,7 @@ io.use(socketioJwt.authorize({
 
 io.on('connection', function(socket){
     console.log(socket.decoded_token.email, 'connected');
-    console.log('a user connected');
+    console.log(socket.decoded_token,'a user connected');
     Messages.find().exec(function(err,messages){
         if(err) console.error(err);
 //console.log(messages);

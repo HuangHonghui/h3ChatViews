@@ -2734,7 +2734,7 @@ body {
   color: #47a3da;
   height: 100%; }
 
-input[type=text], input[type=password], textarea {
+input[type=text], input[type=email], input[type=password], textarea {
   font-size: 14px;
   height: 34px;
   line-height: 20px;
@@ -2747,12 +2747,17 @@ input[type=text], input[type=password], textarea {
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   border-radius: .2857rem;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset; }
-  input[type=text]:focus, input[type=password]:focus, textarea:focus {
+  input[type=text]:focus, input[type=email]:focus, input[type=password]:focus, textarea:focus {
     border: 1px solid rgba(39, 41, 43, 0.3); }
 
 .zui.field {
   width: 200px;
   margin-bottom: 24px; }
+
+.zui.form.full-width .field {
+  width: 100%; }
+.zui.form.full-width .formActions .button {
+  width: 100%; }
 
 .chatIcons {
   width: 40px;
@@ -2845,8 +2850,31 @@ input[type=text], input[type=password], textarea {
   height: 80px;
   width: 100%; }
 
-#formActions {
+.formActions {
   text-align: right;
+  margin-top: 24px; }
+
+/* 登录 */
+.signBox {
+  position: relative;
+  max-width: 400px;
+  margin: 100px auto 0; }
+  .signBox .title {
+    text-align: center;
+    margin: 0 0 24px;
+    font-size: 1.8rem; }
+
+.signSection {
+  margin-bottom: 24px;
+  border: 1px solid #dddddd;
+  padding: 30px 20px;
+  border-radius: 4px;
+  box-shadow: 1px 1px 1px rgba(80, 80, 80, 0.8);
+  position: absolute; }
+
+.signInfo {
+  text-align: right;
+  font-size: 0.8rem;
   margin-top: 24px; }
 
 /*# sourceMappingURL=common.css.map */

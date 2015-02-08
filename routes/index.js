@@ -29,6 +29,7 @@ router.post('/authenticate',function(req,res){
             });
         }else{
             if(user){
+                // todo: 更新token
                 res.json({
                     type:true,
                     data:user,
