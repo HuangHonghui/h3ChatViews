@@ -4,21 +4,31 @@
 var express = require('express');
 var app = express();
 var path = require('path');
-var http = require('http').Server(app);
+var http = require('http');
 var bodyParser = require('body-parser');
 var mongoose = require("mongoose");
-var socketioJwt = require('socketio-jwt');
-var io = require('socket.io')(http);
 
-var jwtSecret = "love 1617";
+//var favicon = require('express-favicon');
+
+var server =http.createServer(app);
+
+var io = require('socket.io')(server);
+var socketioJwt = require('socketio-jwt');
+
+
+var jwtSecret = "1617";
 
 var routes = require('./routes/index');
+
+
 
 //  连接数据库
 mongoose.connect('mongodb://localhost/h3');
 var Messages = require("./models/messages.js");
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
+
+
 
 // 设置静态文件路径
 app.use(express.static(__dirname,'/dist'));
@@ -46,13 +56,17 @@ app.use("/",routes);
 //    res.sendFile(__dirname + '/index.html');
 //});
 
-io.set('authorization',socketioJwt.authorize({
+//io.set('authorization',socketioJwt.authorize({
+//    secret: jwtSecret,
+//    handshake: true
+//}));
+io.use(socketioJwt.authorize({
     secret: jwtSecret,
     handshake: true
 }));
-console.log(io);
+
 io.on('connection', function(socket){
-    //console.log(socket.handshake.decoded_token.email, 'connected');
+    console.log(socket.decoded_token.email, 'connected');
     console.log('a user connected');
     Messages.find().exec(function(err,messages){
         if(err) console.error(err);
@@ -77,6 +91,6 @@ io.on('connection', function(socket){
 });
 
 
-http.listen(3000,function(){
+server.listen(3000,function(){
     console.log('listen on *:3000','good');
 });
