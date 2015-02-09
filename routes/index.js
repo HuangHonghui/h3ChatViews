@@ -6,7 +6,7 @@ var router = express.Router();
 var jwt = require('jsonwebtoken');
 var User = require("../models/Users");
 var auth = require("../helpers/auth");
-var jwtSecret = "love 1617";
+var jwtSecret = "1617";
 
 router.get('/', function(req,res){
     res.render('index');
@@ -30,10 +30,13 @@ router.post('/authenticate',function(req,res){
         }else{
             if(user){
                 // todo: 更新token
-                res.json({
-                    type:true,
-                    data:user,
-                    token:user.token
+                user.token = jwt.sign(user,jwtSecret);
+                user.save(function(err,userSaved){
+                    res.json({
+                        type:true,
+                        data:userSaved,
+                        token:userSaved.token
+                    })
                 });
             }else{
                 res.json({

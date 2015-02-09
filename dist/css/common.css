@@ -2866,10 +2866,9 @@ input[type=text], input[type=email], input[type=password], textarea {
 
 .signSection {
   margin-bottom: 24px;
-  border: 1px solid #dddddd;
   padding: 30px 20px;
   border-radius: 4px;
-  box-shadow: 1px 1px 1px rgba(80, 80, 80, 0.8);
+  box-shadow: 1px 4px 7px rgba(80, 80, 80, 0.8);
   position: absolute; }
 
 .signInfo {

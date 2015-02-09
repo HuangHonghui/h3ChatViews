@@ -68,6 +68,7 @@ io.use(socketioJwt.authorize({
 io.on('connection', function(socket){
     console.log(socket.decoded_token.email, 'connected');
     console.log(socket.decoded_token,'a user connected');
+    socket.emit("user:initName",socket.decoded_token.email);
     Messages.find().exec(function(err,messages){
         if(err) console.error(err);
 //console.log(messages);
@@ -89,6 +90,9 @@ io.on('connection', function(socket){
 
     });
 });
+setInterval(function () {
+    io.sockets.emit('time', Date());
+}, 5000);
 
 
 server.listen(3000,function(){

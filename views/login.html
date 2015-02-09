@@ -6,52 +6,61 @@
     <link rel="stylesheet" href="../dist/css/common.css"/>
 </head>
 <body>
-<div class="signBox">
-    <section class="signIn signSection">
-        <h2 class="title">Login</h2>
-        <form action="/authenticate" method="post" id="loginForm" class="zui form full-width" >
-            <div class="zui field">
-                <label for="email">Email：</label>
-                <input type="text" id="email" name="email" placeholder="Enter your email" required />
+<div id="app">
+
+    <div class="signBox" >
+        <section class="signIn signSection">
+            <h2 class="title">Login</h2>
+            <form action="/authenticate" method="post" id="loginForm" class="zui form full-width" >
+                <div class="zui field">
+                    <label for="email">Email：</label>
+                    <input type="text" id="email" name="email" placeholder="Enter your email" required />
+                </div>
+                <div class="zui field">
+                    <label for="password">Password：</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required/>
+                </div>
+                <div class="formActions">
+                    <input type="submit" value="Sign In" class="button blue"/>
+                </div>
+            </form>
+            <div class="signInfo">
+                Not has a account? To <a href="javascript:;" class="js-toSign" data-target=".signUp">Sign Up</a>
             </div>
-            <div class="zui field">
-                <label for="password">Password：</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required/>
+        </section>
+        <section class="signUp signSection" style="display: none;">
+            <h2 class="title">Sign Up</h2>
+            <div id="error"></div>
+            <form action="/signin" method="post" id="signInForm" class="zui form full-width">
+                <div class="zui field">
+                    <label for="email1">Email：</label>
+                    <input type="text" id="email1" name="email" required=""/>
+                </div>
+                <div class="zui field">
+                    <label for="password1">Password：</label>
+                    <input type="password" id="password1" name="password" required=""/>
+                </div>
+                <div class="formActions">
+                    <input type="submit" value="Sign Up" class="button"/>
+                </div>
+            </form>
+            <div class="signInfo">
+                Had a account? To <a href="javascript:;" class="js-toSign" data-target=".signIn">Sign In</a>
             </div>
-            <div class="formActions">
-                <input type="submit" value="Sign In" class="button blue"/>
-            </div>
-        </form>
-        <div class="signInfo">
-            Not has a account? To <a href="javascript:;" class="js-toSign" data-target=".signUp">Sign Up</a>
-        </div>
-    </section>
-    <section class="signUp signSection" style="display: none;">
-        <h2 class="title">Sign Up</h2>
-        <div id="error"></div>
-        <form action="/signin" method="post" id="signInForm" class="zui form full-width">
-            <div class="zui field">
-                <label for="email1">Email：</label>
-                <input type="text" id="email1" name="email" required=""/>
-            </div>
-            <div class="zui field">
-                <label for="password1">Password：</label>
-                <input type="password" id="password1" name="password" required=""/>
-            </div>
-            <div class="formActions">
-                <input type="submit" value="Sign Up" class="button"/>
-            </div>
-        </form>
-        <div class="signInfo">
-            Had a account? To <a href="javascript:;" class="js-toSign" data-target=".signIn">Sign In</a>
-        </div>
-    </section>
+        </section>
+
+    </div>
 
 </div>
 
+
+
+<script src="../dist/js/vue.js"></script>
 <script src="../bower_components/jquery/dist/jquery.js"></script>
 <script src="../bower_components/store-js/store.js"></script>
 <script>
+
+
     $(function(){
         console.log(store.get('token'));
 

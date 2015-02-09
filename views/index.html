@@ -7,15 +7,63 @@
 </head>
 <body>
 
-<div class="page-wrap">
+<div class="page-wrap" id="app">
+    <div v-component="{{currentView}}" v-with="chatBoxData" v-ref="{{currentView}}"></div>
+
+</div>
+
+<script type="text/x-template" id="login-template">
+    <div class="signBox" >
+        <section class="signIn signSection">
+            <h2 class="title">Login</h2>
+            <form v-on="submit: loginSubmit" class="zui form full-width" >
+                <div class="zui field">
+                    <label for="email">Email：</label>
+                    <input type="text" id="email" name="email" v-model="email" placeholder="Enter your email" required />
+                </div>
+                <div class="zui field">
+                    <label for="password">Password：</label>
+                    <input type="password" id="password" name="password" v-model="password" placeholder="Enter your password" required/>
+                </div>
+                <div class="formActions">
+                    <input type="submit" value="Sign In" class="button blue"/>
+                </div>
+            </form>
+            <div class="signInfo">
+                Not has a account? To <a href="javascript:;" class="js-toSign" data-target=".signUp">Sign Up</a>
+            </div>
+        </section>
+    </div>
+</script>
+<script type="text/x-template" id="signUp-template">
+    <div class="signBox">
+        <section class="signUp signSection">
+            <h2 class="title">Create Your Account!</h2>
+            <div id="error"></div>
+            <form action="/signin" method="post" id="signInForm" class="zui form full-width">
+                <div class="zui field">
+                    <label for="email1">Email：</label>
+                    <input type="text" id="email1" name="email" required=""/>
+                </div>
+                <div class="zui field">
+                    <label for="password1">Password：</label>
+                    <input type="password" id="password1" name="password" required=""/>
+                </div>
+                <div class="formActions">
+                    <input type="submit" value="Create My Account" class="button"/>
+                </div>
+            </form>
+            <div class="signInfo">
+                Had a account? To <a href="javascript:;" class="js-toSign" data-target=".signIn">Sign In</a>
+            </div>
+        </section>
+    </div>
+</script>
+<script type="text/x-template" id="chat-template">
     <div id="chatBox">
         <h2>Chat Room</h2>
         <div class="msgFormBox" >
             <form action="/" v-on="submit: submitMsg">
-                <div class="zui field">
-                    <input type="text" id="userName" name="userName" v-model="userName" class=""
-                           placeholder="UserName" required=""/>
-                </div>
                 <textarea name="msgToSend" id="msgToSend" cols="30" v-model="msgToSend" required></textarea>
                 <div id="formActions" class="formActions">
                     <button id="sendMsgBtn" class="button blue">Send</button>
@@ -37,34 +85,57 @@
         </ul>
 
     </div>
-</div>
+</script>
 
 <script src="../bower_components/store-js/store.js"></script>
+<script src="../bower_components/page.js/page.js"></script>
 <script src="../dist/js/vue.js"></script>
 <script src="socket.io/socket.io.js"></script>
 <!--<script src="//code.jquery.com/jquery-2.1.3.min.js"></script>-->
+<script src="../bower_components/jquery/dist/jquery.js"></script>
 <script>
-    Vue.config.debug = true
-    var socket = io.connect(store.get('token')?('?token='+store.get('token')):'',{
-        'forceNew':true
-    });
-    socket.on("error", function(error) {
-        if (error.type == "UnauthorizedError" || error.code == "invalid_token") {
-            // redirect user to login page perhaps?
-            console.log("User's token has expired");
-            location.href="/login";
-        }
-    });
-//$(function(){
-//    $('form').submit(function(){
-//        socket.emit('sendMsg',$('#msgToSend').val());
-//        $('#msgToSend').val('');
-//        return false;
-//    });
-//})
-function sendMsg(socket,msgObj){
-    socket.emit('msg:send',msgObj);
-}
+    Vue.config.debug = true;
+    page.base('/#');
+
+    var token,socket,chatBox;
+
+    // 登录成功就执行socket代码，侦听事件代码
+    function connect () {
+        token = token?token:store.get('token');
+        socket = io.connect(token ? ('?token=' + token) : '', {
+            'forceNew': true
+        });
+
+        socket.on('user:initName',function(data){
+            app.userName = data;
+        });
+        socket.on("error", function(error) {
+            if (error.type == "UnauthorizedError" || error.code == "invalid_token") {
+                // redirect user to login page perhaps?
+                console.log("User's token has expired");
+//                app.currentView = 'login';
+                page('/login');
+            }
+        });
+        socket.on('msg:new',function(msg){
+            if(app.$.chatBox){
+                app.$.chatBox.receive(msg);
+            }
+        });
+        socket.on('msg:init',function(messages){
+            if(app&&app.$data){
+                app.$data.chatBoxData.messages = messages.reverse();
+            }
+
+        });
+        socket.on('time',function(data){
+            console.log(data);
+        });
+    }
+    connect();
+    function sendMsg(socket,msgObj){
+        socket.emit('msg:send',msgObj);
+    }
 
     Vue.filter('date',function(value,key){
         var format = key || 'MM/dd/yyyy HH:mm';
@@ -93,51 +164,123 @@ function sendMsg(socket,msgObj){
         return format;
     });
 
-var chatBox = new Vue({
-    el:'#chatBox',
-    data:{messages:null,userName:"",msgToSend:""},
-    methods:{
-        submitMsg:function(e){
-            e.preventDefault();
-            var msgObj = {
-                userName:this.userName,
-                body:this.msgToSend
-            };
 
-//            sendMsg(socket, JSON.stringify(msgObj));
-            sendMsg(socket, msgObj);
-            msgObj.created=new Date();
-            this.$data.messages.unshift(msgObj);
-
-            this.msgToSend="";
-            return false;
+    Vue.component('login',{
+        template:'#login-template',
+        data:function(){
+            return {
+                email:'',
+                password:'',
+                action:'/authenticate'
+            }
         },
-        receive:function(msg){
-            console.log('receive');
-            this.$data.messages.unshift(msg);
-<<<<<<< Updated upstream:views/index.html
-=======
-        },
-        created:function(allMsgs){
-            console.log(typeof allMsgs);
-            console.log(this.$data.messages);
-//            this.$data.messages = allMsgs.unshift(this.$data.messages[0]);
->>>>>>> Stashed changes:index.html
+        methods: {
+            loginSubmit:function(e){
+                e.preventDefault();
+                $.ajax({
+                    type:'post',
+                    url:this.action,
+                    data:{email:this.email,password:this.password}
+                }).done(function(data){
+                    if(data.type){
+                        store.set('token',data.token);
+                        token = data.token;
+                        app.currentView = 'chatBox';
+                        app.userName = data.user.userName;
+                        connect ();
+                    }else{
+                        $("#error").html(data.data);
+                    }
+                });
+                return false;
+            }
         }
+    });
+    Vue.component('signUp',{
+        template:'#signUp-template',
+        data:function(){
+            return {
+                email:'',
+                password:'',
+                action:'/signin'
+            }
+        },
+        methods: {
+            loginSubmit:function(e){
+                e.preventDefault();
+                $.ajax({
+                    type:'post',
+                    url:this.action,
+                    data:{email:this.email,password:this.password}
+                }).done(function(data){
+                    if(data.type){
+                        store.set('token',data.token);
+                        token = data.token;
+                        app.currentView = 'chatBox';
+                        app.userName = data.user.userName;
+                        connect ();
+                    }else{
+                        $("#error").html(data.data);
+                    }
+                });
+                return false;
+            }
+        }
+    });
+
+    Vue.component('chatBox',{
+        template:'#chat-template',
+        data:function(){
+            return {msgToSend:""};
+        },
+        methods:{
+            submitMsg:function(e){
+                e.preventDefault();
+                var msgObj = {
+                    userName:this.$parent.userName,
+                    body:this.msgToSend
+                };
+
+                sendMsg(socket, msgObj);
+                msgObj.created=new Date();
+
+                this.$parent.chatBoxData.messages.unshift(msgObj);
+
+                this.msgToSend="";
+                return false;
+            },
+            receive:function(msg){
+
+                this.$parent.chatBoxData.messages.unshift(msg);
+            }
+        }
+    });
+    var app = new Vue({
+        el:'#app',
+        data:{
+            userName:'',
+            currentView:'chatBox',
+            chatBoxData:{
+                messages:null
+            }
+        }
+    });
+
+    function loginRouter(){
+        app.currentView = 'login';
     }
-});
+    function chatRouter(){
+        app.currentView = 'chatBox';
+    }
+    function signUpRouter(){
+        app.currentView = 'signUp';
+    }
 
-    socket.on('msg:new',function(msg){
-        if(chatBox){
-            chatBox.receive(msg);
-        }
-    });
-    socket.on('msg:init',function(messages){
-        if(chatBox){
-            chatBox.$data.messages = messages.reverse();
-        }
-    });
-
+    page('/',chatRouter);
+    page('/login',loginRouter);
+    page('/chat',chatRouter);
+    page('/signUp',signUpRouter);
+    page();
 </script>
 </body>
 </html>
