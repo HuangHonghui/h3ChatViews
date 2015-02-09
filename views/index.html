@@ -40,14 +40,14 @@
         <section class="signUp signSection">
             <h2 class="title">Create Your Account!</h2>
             <div id="error"></div>
-            <form action="/signin" method="post" id="signInForm" class="zui form full-width">
+            <form action="/signin" v-on="submit: signUpSubmit" method="post" id="signInForm" class="zui form full-width">
                 <div class="zui field">
                     <label for="email1">Email：</label>
-                    <input type="text" id="email1" name="email" required=""/>
+                    <input type="text" id="email1" name="email" v-model="email" required=""/>
                 </div>
                 <div class="zui field">
                     <label for="password1">Password：</label>
-                    <input type="password" id="password1" name="password" required=""/>
+                    <input type="password" id="password1" name="password" v-model="password" required=""/>
                 </div>
                 <div class="formActions">
                     <input type="submit" value="Create My Account" class="button"/>
@@ -171,15 +171,17 @@
             return {
                 email:'',
                 password:'',
-                action:'/authenticate'
+                action:'/authenticate',
+                abc:'s'
             }
         },
         methods: {
             loginSubmit:function(e){
+                console.log(e,this);
                 e.preventDefault();
                 $.ajax({
                     type:'post',
-                    url:this.action,
+                    url:this.$data.action,
                     data:{email:this.email,password:this.password}
                 }).done(function(data){
                     if(data.type){
@@ -206,7 +208,7 @@
             }
         },
         methods: {
-            loginSubmit:function(e){
+            signUpSubmit:function(e){
                 e.preventDefault();
                 $.ajax({
                     type:'post',
