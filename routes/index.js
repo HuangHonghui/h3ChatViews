@@ -7,6 +7,7 @@ var jwt = require('jsonwebtoken');
 var User = require("../models/Users");
 var auth = require("../helpers/auth");
 var jwtSecret = "1617";
+var expiresMin = 60*5;
 
 router.get('/', function(req,res){
     res.render('index');
@@ -30,7 +31,7 @@ router.post('/authenticate',function(req,res){
         }else{
             if(user){
                 // todo: 更新token
-                user.token = jwt.sign(user,jwtSecret);
+                user.token = jwt.sign(user,jwtSecret,{ expiresInMinutes: expiresMin });
                 user.save(function(err,userSaved){
                     res.json({
                         type:true,
@@ -66,7 +67,7 @@ router.post('/signin',function(req,res){
                 userModel.email = req.body.email;
                 userModel.password = req.body.password;
                 userModel.save(function(err,user){
-                    user.token = jwt.sign(user,jwtSecret);
+                    user.token = jwt.sign(user,jwtSecret,{ expiresInMinutes: expiresMin });
                     user.save(function(err,userSaved){
                         res.json({
                             type:true,
@@ -78,6 +79,14 @@ router.post('/signin',function(req,res){
             }
         }
     });
+});
+
+router.post('/logout',function(req,res){
+    if(req.body.token){
+        var user = jwt.decode(token);
+    }
+
+    console.log(req.body);
 });
 
 router.get('/api/me',auth.ensureAuthorized,function(req, res){

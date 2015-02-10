@@ -8,7 +8,8 @@
 <body>
 
 <div class="page-wrap" id="app">
-    <div v-component="{{currentView}}" v-with="chatBoxData" v-ref="{{currentView}}"></div>
+    <a href="javascript:;" id="logoutBtn">Logout</a>
+    <div v-component="{{currentView}}" v-with="messages:chatBoxData.messages"  v-ref="{{currentView}}"></div>
 
 </div>
 
@@ -97,6 +98,23 @@
     Vue.config.debug = true;
     page.base('/#');
 
+    $("#logoutBtn").on('click',function(e){
+        e.preventDefault();
+        var token = store.get('token');
+        if(token){
+            $.ajax({
+                type:'post',
+                url:'/logout',
+                data:{token:token}
+            }).done(function(data){
+
+                //store.remove('token');
+
+            });
+        }
+
+    });
+
     var token,socket,chatBox;
 
     // 登录成功就执行socket代码，侦听事件代码
@@ -171,24 +189,27 @@
             return {
                 email:'',
                 password:'',
-                action:'/authenticate',
-                abc:'s'
+                actionUrl:'/authenticate'
             }
         },
         methods: {
             loginSubmit:function(e){
                 console.log(e,this);
+                console.log('email:',this.email);
+                console.log('password:',this.password);
+                console.log('action:',this.actionUrl);
                 e.preventDefault();
                 $.ajax({
                     type:'post',
-                    url:this.$data.action,
+                    url:this.actionUrl,
                     data:{email:this.email,password:this.password}
                 }).done(function(data){
+                    console.log(data);
                     if(data.type){
                         store.set('token',data.token);
                         token = data.token;
                         app.currentView = 'chatBox';
-                        app.userName = data.user.userName;
+                        app.userName = data.data.email;
                         connect ();
                     }else{
                         $("#error").html(data.data);
@@ -219,7 +240,7 @@
                         store.set('token',data.token);
                         token = data.token;
                         app.currentView = 'chatBox';
-                        app.userName = data.user.userName;
+                        app.userName = data.data.email;
                         connect ();
                     }else{
                         $("#error").html(data.data);
@@ -232,6 +253,7 @@
 
     Vue.component('chatBox',{
         template:'#chat-template',
+        inherit: true,
         data:function(){
             return {msgToSend:""};
         },

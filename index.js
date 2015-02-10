@@ -17,6 +17,7 @@ var socketioJwt = require('socketio-jwt');
 
 
 var jwtSecret = "1617";
+var expiresMin = 60*5;
 
 var routes = require('./routes/index');
 
