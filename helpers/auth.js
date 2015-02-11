@@ -2,6 +2,7 @@
  * Created by Administrator on 2015/2/5.
  */
 var User = require('../models/Users');
+var crypto = require('crypto');
 function ensureAuthorized(req, res, next) {
 
     var bearerToken;
@@ -35,3 +36,7 @@ function ensureAuthorized(req, res, next) {
     }
 }
 module.exports.ensureAuthorized = ensureAuthorized;
+
+module.exports.hashPassword = function(password){
+    return crypto.createHash('sha256').update(password).digest('hex');
+};

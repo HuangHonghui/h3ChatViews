@@ -2876,4 +2876,8 @@ input[type=text], input[type=email], input[type=password], textarea {
   font-size: 0.8rem;
   margin-top: 24px; }
 
+.error {
+  color: #ff050c;
+  font-size: 0.8em; }
+
 /*# sourceMappingURL=common.css.map */

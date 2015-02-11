@@ -8,6 +8,7 @@ var http = require('http');
 var bodyParser = require('body-parser');
 var mongoose = require("mongoose");
 
+console.log();
 //var favicon = require('express-favicon');
 
 var server =http.createServer(app);
@@ -17,7 +18,7 @@ var socketioJwt = require('socketio-jwt');
 
 
 var jwtSecret = "1617";
-var expiresMin = 60*5;
+var expiresMin = 5;
 
 var routes = require('./routes/index');
 
@@ -63,13 +64,14 @@ app.use("/",routes);
 //}));
 io.use(socketioJwt.authorize({
     secret: jwtSecret,
-    handshake: true
+    handshake: true,
+    timeout: 15000
 }));
 
 io.on('connection', function(socket){
     console.log(socket.decoded_token.email, 'connected');
     console.log(socket.decoded_token,'a user connected');
-    socket.emit("user:initName",socket.decoded_token.email);
+    socket.emit("user:initName",socket.decoded_token.userName);
     Messages.find().exec(function(err,messages){
         if(err) console.error(err);
 //console.log(messages);
