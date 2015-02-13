@@ -132,7 +132,7 @@
                     app.chatBoxData.messages = null;
                 }
 
-                page('/login');
+                page.redirect('/login');
             });
         }
 
@@ -155,7 +155,7 @@
 //                app.currentView = 'login';
                 console.log(location.hash);
                 if(location.hash.toLowerCase()!="#/signup"){
-                    page('/login');
+                    page.redirect('/login');
                 }
 
             }
@@ -334,25 +334,29 @@
     function chatRouter(){
 
         console.log('chatRouter');
-        if(token && socket && socket.connected){
-            console.log('connected');
-            app.currentView = 'chatBox';
-        }else{
-            console.log('go to login');
-            page('/login');
-        }
+        app.currentView = 'chatBox';
     }
     function signUpRouter(){
         app.currentView = 'signUp';
     }
+    function authRouter(ctx,next){
+
+        if(token && socket && socket.connected){
+            console.log('connected');
+            next();
+        }else{
+            console.log('go to login');
+            page.redirect('/login');
+        }
+    }
 
 
-    page('/',chatRouter);
+    page('/',authRouter,chatRouter);
     page('/login',loginRouter);
-    page('/chat',chatRouter);
+    page('/chat',authRouter,chatRouter);
     page('/signUp',signUpRouter);
     page('/*',function(){
-        page("/");
+        page.redirect("/");
     });
     page();
 </script>
