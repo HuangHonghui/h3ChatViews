@@ -32,7 +32,7 @@
                 </div>
             </form>
             <div class="signInfo">
-                Not has a account? To <a href="javascript:;" v-on="click: goSignUp">Sign Up</a>
+                Not has a account?  <a href="#/signup" >Sign Up</a>
             </div>
         </section>
     </div>
@@ -45,7 +45,7 @@
             <form action="/signin" v-on="submit: signUpSubmit" method="post" id="signInForm" class="zui form full-width">
                 <div class="zui field">
                     <label for="userName">UserName：</label>
-                    <input type="text" id="userName" name="userName" v-model="userName" required=""/>
+                    <input type="text" id="userName" name="userName" v-model="userName" required="" />
                 </div>
                 <div class="zui field">
                     <label for="email1">Email：</label>
@@ -60,7 +60,7 @@
                 </div>
             </form>
             <div class="signInfo">
-                Had a account? To <a href="javascript:;" v-on="click: goLogin">Login</a>
+                Had a account? <a href="#/login" >Login</a>
             </div>
         </section>
     </div>
@@ -106,9 +106,16 @@
     function getH3ChatToken(){
         return store.get('h3chat_token');
     }
+    function removeH3ChatToken(){
+        store.remove('h3chat_token');
+    }
 
     Vue.config.debug = true;
     page.base('/#');
+//page.hashbang = true;
+
+
+    var token,socket,chatBox;
 
     $("#logoutBtn").on('click',function(e){
         e.preventDefault();
@@ -119,15 +126,17 @@
                 url:'/logout',
                 data:{token:token}
             }).done(function(data){
+                socket.disconnect();
+                removeH3ChatToken();
+                if(app.chatBoxData.messages){
+                    app.chatBoxData.messages = null;
+                }
 
-                //store.remove('token');
-
+                page('/login');
             });
         }
 
     });
-
-    var token,socket,chatBox;
 
     // 登录成功就执行socket代码，侦听事件代码
     function connect () {
@@ -144,7 +153,11 @@
                 // redirect user to login page perhaps?
                 console.log("User's token has expired");
 //                app.currentView = 'login';
-                page('/login');
+                console.log(location.hash);
+                if(location.hash.toLowerCase()!="#/signup"){
+                    page('/login');
+                }
+
             }
         });
         socket.on('msg:new',function(msg){
@@ -154,6 +167,8 @@
         });
         socket.on('msg:init',function(messages){
             if(app&&app.$data){
+                // 链接成功就跳转
+                page("/");
                 app.$data.chatBoxData.messages = messages.reverse();
             }
 
@@ -194,6 +209,14 @@
         return format;
     });
 
+    Vue.filter('trim',{
+        read:function(val){
+            return val;
+        },
+        write: function(val,oldVal){
+            return val.replace(/\s/g,'');
+        }
+    });
 
     Vue.component('login',{
         template:'#login-template',
@@ -222,8 +245,6 @@
                     if(data.type){
                         setH3ChatToken(data.token);
                         token = data.token;
-//                        app.currentView = 'chatBox';
-                        page("/");
                         app.userName = data.data.userName;
                         connect ();
                     }else{
@@ -231,11 +252,6 @@
                     }
                 });
                 return false;
-            },
-            goSignUp: function(e){
-                e.preventDefault();
-//                this.$parent.currentView = "signUp";
-                page('/signUp');
             }
         }
     });
@@ -269,11 +285,6 @@
                     }
                 });
                 return false;
-            },
-            goLogin: function(e){
-                e.preventDefault();
-//                this.$parent.currentView = "login";
-                page('/login');
             }
         }
     });
@@ -321,15 +332,20 @@
         app.currentView = 'login';
     }
     function chatRouter(){
-        if(token && socket){
+
+        console.log('chatRouter');
+        if(token && socket && socket.connected){
+            console.log('connected');
             app.currentView = 'chatBox';
         }else{
+            console.log('go to login');
             page('/login');
         }
     }
     function signUpRouter(){
         app.currentView = 'signUp';
     }
+
 
     page('/',chatRouter);
     page('/login',loginRouter);

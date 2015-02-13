@@ -97,10 +97,17 @@ router.post('/signin',function(req,res){
 
 router.post('/logout',function(req,res){
     if(req.body.token){
-        var user = jwt.decode(token);
+        var user = jwt.decode(req.body.token);
+        // TODO: 改变用户在线状态等等操作。
+        console.log(user,"off");
+        res.json({
+            type:true,
+            data:"logout success"
+        });
     }
 
-    console.log(req.body);
+
+
 });
 
 router.get('/api/me',auth.ensureAuthorized,function(req, res){

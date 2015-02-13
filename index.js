@@ -65,20 +65,21 @@ app.use("/",routes);
 io.use(socketioJwt.authorize({
     secret: jwtSecret,
     handshake: true,
-    timeout: 15000
+    timeout: 6000
 }));
 
 io.on('connection', function(socket){
     console.log(socket.decoded_token.email, 'connected');
     console.log(socket.decoded_token,'a user connected');
+
     socket.emit("user:initName",socket.decoded_token.userName);
     Messages.find().exec(function(err,messages){
         if(err) console.error(err);
 //console.log(messages);
         socket.emit("msg:init",messages);
     });
-    socket.on('disconnect', function(){
-        console.log('user disconnected');
+    socket.on('disconnect', function(a){
+        console.log('user disconnected',a);
     });
     socket.on('msg:send',function(msg){
         if(msg&&typeof msg=='object'){
